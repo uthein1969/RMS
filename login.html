@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RMS - Login</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #0f172a;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .login-card {
+      background-color: #1e293b;
+      padding: 32px 28px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 320px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      border: 1px solid #334155;
+    }
+    h2 {
+      color: #f8fafc;
+      margin: 0 0 20px 0;
+      text-align: center;
+      font-size: 20px;
+    }
+    label {
+      color: #94a3b8;
+      font-size: 13px;
+      display: block;
+      margin-bottom: 6px;
+    }
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+      border-radius: 6px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: #fff;
+      font-size: 14px;
+      box-sizing: border-box;
+      outline: none;
+    }
+    input:focus {
+      border-color: #3b82f6;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    .error {
+      color: #ef4444;
+      font-size: 13px;
+      text-align: center;
+      margin-top: 12px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-card">
+    <h2>AML RMS Dashboard</h2>
+    <form onsubmit="handleLogin(event)">
+      <label for="username">Username</label>
+      <input type="text" id="username" required autocomplete="username" />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" required autocomplete="current-password" />
+
+      <button type="submit">Sign In</button>
+      <div id="error-msg" class="error">Username သို့မဟုတ် Password မှားယွင်းနေပါသည်</div>
+    </form>
+  </div>
+
+  <script>
+    // သတ်မှတ်ထားသော Username/Password Hash များ (ဥပမာ- user: admin / pass: Risk@2026)
+    const VALID_USER_HASH = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918";
+    const VALID_PASS_HASH = "6f0b3eaef8c7e3f8481ffcdde2debe60bb5444cf425ef8484931a19f2ba95159";
+
+    async function sha256(text) {
+      const buffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+      return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+
+      const userHash = await sha256(user);
+      const passHash = await sha256(pass);
+
+      if (userHash === VALID_USER_HASH && passHash === VALID_PASS_HASH) {
+        // Login အောင်မြင်ကြောင်း Session သတ်မှတ်ပြီး Dashboard သို့ သွားမည်
+        sessionStorage.setItem('rms_authenticated', 'true');
+        window.location.href = './index.html';
+      } else {
+        document.getElementById('error-msg').style.display = 'block';
+      }
+    }
+
+    // Login ဝင်ထားပြီးသားဖြစ်ပါက Dashboard သို့ တိုက်ရိုက်သွားစေရန်
+    if (sessionStorage.getItem('rms_authenticated') === 'true') {
+      window.location.href = './index.html';
+    }
+  </script>
+</body>
+</html>
