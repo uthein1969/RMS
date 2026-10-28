@@ -1587,20 +1587,5 @@ window.addEventListener('resize', () => Object.values(charts).forEach(c=>c.resiz
 
 initEmpty();
 </script>
-
-<!-- Logout Button (HTML အပိုင်း) -->
-<div style="text-align: right; padding: 20px; border-top: 1px solid #334155; margin-top: 40px;">
-  <button onclick="handleLogout()" style="background-color: #dc2626; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;">
-    Sign Out / Logout
-  </button>
-</div>
-
-<!-- Logout Function (သီးသန့် JavaScript အပိုင်း) -->
-<script>
-  function handleLogout() {
-    sessionStorage.removeItem('rms_authenticated');
-    window.location.replace('./login.html');
-  }
-</script>
 </body>
 </html>
