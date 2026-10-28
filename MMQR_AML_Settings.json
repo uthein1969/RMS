@@ -1,0 +1,69 @@
+{
+  "format": "MMQR_AML_Settings",
+  "version": 1,
+  "savedAt": "2026-10-24T07:12:26.024Z",
+  "source": "MMQR_Merchant_Transactions_20102026.xlsx",
+  "columns": [
+    "_ts",
+    "_amount",
+    "Customer Party",
+    "Debitor Name",
+    "Merchant Name",
+    "Phone No",
+    "Status"
+  ],
+  "rules": {
+    "R1": {
+      "enabled": true,
+      "weight": 30,
+      "low": 400000,
+      "high": 500000,
+      "count": 3
+    },
+    "R2": {
+      "enabled": true,
+      "weight": 25,
+      "amount": 500000,
+      "count": 2
+    },
+    "R3": {
+      "enabled": true,
+      "weight": 25,
+      "count": 5,
+      "windowMin": 30
+    },
+    "R4": {
+      "enabled": true,
+      "weight": 20,
+      "count": 3,
+      "windowMin": 30
+    },
+    "R5": {
+      "enabled": true,
+      "weight": 30,
+      "amount": 1000000
+    },
+    "R6": {
+      "enabled": true,
+      "weight": 10,
+      "minAmount": 100000,
+      "roundStep": 100000
+    },
+    "R7": {
+      "enabled": true,
+      "weight": 15,
+      "minAmount": 100000,
+      "fromHour": 22,
+      "toHour": 5
+    },
+    "R8": {
+      "enabled": true,
+      "weight": 20,
+      "merchants": 5
+    },
+    "LEVELS": {
+      "high": 50,
+      "medium": 25
+    }
+  }
+}
