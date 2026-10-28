@@ -4,11 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MMQR AML Risk Dashboard — STR / TTR Report</title>
-<script>
-    if (sessionStorage.getItem('rms_authenticated') !== 'true') {
-      window.location.replace('./login.html');
-    }
-</script>  
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -1127,6 +1122,10 @@ function renderKpis(){
   ].map(k=>`<div class="kpi ${k.c}"><div class="lab">${k.l}</div><div class="val">${k.v}</div><div class="hint">${k.h}</div></div>`).join('');
 }
 function renderRuleCards(){
+  $('#ruleGrid').innerHTML = RULE_IDS.map(id => {
+    const r = RULES[id], n = rows.filter(x=>x._flags.includes(id)).length;
+    return `<div class="rule-card"><div class="rid">${id} · weight ${r.weight}</div>
+      <div class="rname">${esc(r.name)}</div><div class="rdesc">${esc(r.desc)}</div>
       <div class="rnum" style="color:${n?'#f87171':'#64748b'}">${fmt0(n)}</div>
       <div class="note">flagged transactions</div></div>`;
   }).join('');
@@ -1586,6 +1585,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
 window.addEventListener('resize', () => Object.values(charts).forEach(c=>c.resize()));
 
 initEmpty();
+
 </script>
 </body>
 </html>
