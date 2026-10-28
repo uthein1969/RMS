@@ -90,25 +90,18 @@
   </div>
 
   <script>
-    // သတ်မှတ်ထားသော Username/Password Hash များ (ဥပမာ- user: admin / pass: Risk@2026)
-    const VALID_USER_HASH = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918";
-    const VALID_PASS_HASH = "6f0b3eaef8c7e3f8481ffcdde2debe60bb5444cf425ef8484931a19f2ba95159";
+    // သတ်မှတ်ထားသော Username နှင့် Password (မိမိ စိတ်ကြိုက် ပြင်နိုင်ပါသည်)
+    const TARGET_USER = "admin";
+    const TARGET_PASS = "Risk@2026";
 
-    async function sha256(text) {
-      const buffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
-      return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    async function handleLogin(e) {
+    function handleLogin(e) {
       e.preventDefault();
+      
       const user = document.getElementById('username').value.trim();
       const pass = document.getElementById('password').value.trim();
 
-      const userHash = await sha256(user);
-      const passHash = await sha256(pass);
-
-      if (userHash === VALID_USER_HASH && passHash === VALID_PASS_HASH) {
-        // Login အောင်မြင်ကြောင်း Session သတ်မှတ်ပြီး Dashboard သို့ သွားမည်
+      // တိုက်ရိုက် စစ်ဆေးခြင်း
+      if (user === TARGET_USER && pass === TARGET_PASS) {
         sessionStorage.setItem('rms_authenticated', 'true');
         window.location.href = './index.html';
       } else {
@@ -116,7 +109,7 @@
       }
     }
 
-    // Login ဝင်ထားပြီးသားဖြစ်ပါက Dashboard သို့ တိုက်ရိုက်သွားစေရန်
+    // Login ဝင်ထားပြီးသားဖြစ်ပါက Dashboard သို့ တိုက်ရိုက်သွားမည်
     if (sessionStorage.getItem('rms_authenticated') === 'true') {
       window.location.href = './index.html';
     }
