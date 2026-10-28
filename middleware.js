@@ -1,22 +1,26 @@
-export default function middleware(req) {
-  // Static assets များနှင့် Favicon များကို မတားဆီးရန်
-  const basicAuth = req.headers.get('authorization');
+export const config = {
+  matcher: '/:path*',
+};
 
-  if (basicAuth) {
-    const authValue = basicAuth.split(' ')[1];
+export default function middleware(req) {
+  const authHeader = req.headers.get('authorization');
+
+  if (authHeader) {
+    const authValue = authHeader.split(' ')[1];
     const [user, pwd] = atob(authValue).split(':');
 
-    // Environment Variables ထဲရှိ တန်ဖိုးများနှင့် စစ်ဆေးခြင်း
-    if (user === process.env.AUTH_USER && pwd === process.env.AUTH_PASS) {
-      return; // အချက်အလက်မှန်ကန်ပါက Dashboard ပေးဝင်မည်
+    if (
+      user === process.env.AUTH_USER &&
+      pwd === process.env.AUTH_PASS
+    ) {
+      return; // အချက်အလက်မှန်ပါက App ပေးဝင်မည်
     }
   }
 
-  // မမှန်ကန်ပါက Password ရိုက်ထည့်ရန် Browser Login Box တောင်းဆိုခြင်း
   return new Response('Access Denied: Authentication Required', {
     status: 401,
     headers: {
-      'WWW-Authenticate': 'Basic realm="Risk Management System"',
+      'WWW-Authenticate': 'Basic realm="Risk Management System", charset="UTF-8"',
     },
   });
 }
